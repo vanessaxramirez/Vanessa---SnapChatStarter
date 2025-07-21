@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 
-import { Card, FAB } from "@rneui/themed";
+import { Card, FAB } from "@rn-vui/themed";
 import {
   View,
   Text,

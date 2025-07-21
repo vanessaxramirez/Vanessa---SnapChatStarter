@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { supabase } from "../utils/hooks/supabase";
-import { Dialog, FAB } from "@rneui/themed";
+import { Dialog, FAB } from "@rn-vui/themed";
 
 export default function AddEvent({ isVisible, onClose }) {
   const [title, setTitle] = useState("");

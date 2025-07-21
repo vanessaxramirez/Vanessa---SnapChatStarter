@@ -21,7 +21,6 @@ import PostcaptureOptions from "../components/PostcaptureActions";
 // Add supabase to store:
 import { supabase } from "../utils/hooks/supabase";
 import CameraGalleryMenu from "../components/CameraGalleryMenu";
-import { Button } from "react-native-elements";
 
 export default function CameraScreen({ navigation, focused }) {
   const tabBarHeight = useBottomTabBarHeight();

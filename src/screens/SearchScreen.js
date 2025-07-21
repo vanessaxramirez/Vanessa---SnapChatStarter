@@ -1,10 +1,9 @@
-// import { color } from "@rneui/base";
+// import { color } from "@rn-vui/base";
 import { Image, Platform, Text, View } from "react-native";
-import { SearchBar } from "react-native-elements";
+import { SearchBar } from "@rn-vui/themed";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { Button } from "react-native-elements";
 import { useState, useEffect } from "react";
 import { Pressable, FlatList, Item } from "react-native";
 import { supabase } from "../utils/hooks/supabase";

@@ -8,7 +8,7 @@ import {
   Button,
   TouchableOpacity,
 } from "react-native";
-import { Card, FAB } from "@rneui/themed";
+import { Card, FAB } from "@rn-vui/themed";
 
 export default function EventInfo({ isVisible, event, onClose }) {
   if (!event || !isVisible) return null;
