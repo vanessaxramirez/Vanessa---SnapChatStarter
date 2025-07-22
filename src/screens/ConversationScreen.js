@@ -28,7 +28,7 @@ export default function ConversationScreen({ route, navigation }) {
     fetchConversations();
     if (user !== null) {
       setLoading(false);
-      console.log("USER", user);
+      // console.log("USER", user);
     }
   }, [user]);
 
