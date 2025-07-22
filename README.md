@@ -24,7 +24,7 @@ $ npx expo installs
 # Set Up the Upstream Remote
 1. Add the original repository as a remote: This allows you to pull in updates from the original repository.
 ```js
-$ git remote add upstream https://github.com/Snap-Engineering-Academy-2025/SnapChatStarter.git
+$ git remote add upstream https://github.com/Snap-Engineering-Academy-2025/SnapChatStarterForkable.git
 ```
 2. Verify the new remote named 'upstream'
 
