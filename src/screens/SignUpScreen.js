@@ -19,6 +19,12 @@ export default function SignupScreen({ navigation }) {
   const [alreadyInUseButton, setAlreadyInUseButton] = useState(false);
   //major dubbing here to figure out why auth doesnt work
   const [alreadyInUseMessage, setAlreadyInUseMessage] = useState("");
+  
+  function isValidDateFormat(input) {
+  const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
+  return dateRegex.test(input);
+}
+  
   async function handleSubmit() {
     // console.log("handle submit invoked!!");
 
@@ -106,7 +112,7 @@ export default function SignupScreen({ navigation }) {
           style={styles.inputField}
           secureTextEntry={false}
           autoCapitalize="none"
-          onChangeText={(birthday) => setBirthday(birthday)}
+          onChangeText={(birthday) => {setBirthday(isValidDateFormat(birthday) ? birthday : birthday.replace(/^(\d{2})(\d{2})(\d{4})$/, "$1/$2/$3") )}}
         />
         <Text style={styles.disclaimerText}>
           By tapping Sign Up & Accept, you acknowledge that you have read the{" "}
