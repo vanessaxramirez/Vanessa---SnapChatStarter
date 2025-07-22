@@ -27,7 +27,7 @@ export default function LoginScreen({ navigation }) {
     if (error) {
       console.error("Error logging in:", error.message);
     } else {
-      // console.log("User signed in:", user);
+      console.log("User signed in:", user);
       // Navigate to a different screen or handle successful login
     }
   }
