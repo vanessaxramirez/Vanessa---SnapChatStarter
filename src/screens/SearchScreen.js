@@ -171,7 +171,8 @@ export default function SearchScreen() {
           />
           <Pressable
             onPress={() => {
-              navigation.navigate("UserTab");
+              navigation.goBack();
+              console.log("clicked");
             }}
           >
             <Text style={{ fontWeight: "bold" }}> Cancel</Text>
