@@ -172,7 +172,6 @@ export default function SearchScreen() {
           <Pressable
             onPress={() => {
               navigation.goBack();
-              console.log("clicked");
             }}
           >
             <Text style={{ fontWeight: "bold" }}> Cancel</Text>
