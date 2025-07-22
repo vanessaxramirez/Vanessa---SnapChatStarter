@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FlatList, Image, StyleSheet } from "react-native";
 
-const DATA = [
+const RAWDATA = [
   {
     id: "https://cdn2.psychologytoday.com/assets/styles/manual_crop_16_9_1200x675/public/teaser_image/blog_entry/2023-01/kitty.green66--2.jpg?itok=5rgu2CRx",
     title: "First Item",
@@ -19,12 +19,44 @@ const DATA = [
     title: "Fourth Item",
   },
 ];
+const DATA = []
+//plan
+//make a function using useEffect (so that it happens on load)
+//the function will take iterate through RAWDATA 
+  //when iterating check if the id will give a valid 200
+  //if so append that element to DATA
+  //at end of iterations, data, now only has good urls
+
+
+  async function filterValidImages(imageList) {
+
+  for (const element of imageList) {
+    const URL = element.id
+    if (await isValidImage(URL)) {
+      DATA.push(element);
+    }
+  }
+}
+
+async function isValidImage(url) {
+  try {
+    const response = await fetch(url, { method: 'HEAD' }); // Only checks headers
+    return response.ok;
+  } catch (err) {
+    return false; // Network error or invalid URL
+  }
+}
 
 const renderItem = ({ item }) => {
   return <Image style={styles.image} source={{ uri: item.id }} />;
 };
 
 export default function SpotlightScreen() {
+    useEffect(() => {
+      console.log("useEffect ran");
+      filterValidImages(RAWDATA);
+    }
+  );
   return (
     <FlatList
       contentContainerStyle={styles.container}
