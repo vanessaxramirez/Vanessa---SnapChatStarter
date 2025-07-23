@@ -22,6 +22,7 @@ export default function MapScreen({ navigation }) {
   const insets = useSafeAreaInsets();
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
+   const [addEventvisible, setAddEventvisible] = useState(false);
 
   const [currentRegion, setCurrentRegion] = useState({
     latitude: 34.0211573,
