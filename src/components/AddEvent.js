@@ -98,7 +98,7 @@ export default function AddEvent({ isVisible, onClose, coordinates }) {
         placeholder="Time (required)"
       ></TextInput>
       <TextInput
-        onChangeText={(text) => setLocation(text)}
+        onChangeText={(text) => coordinates ? setLocation() : setLocation(text)}
         style={styles.inputFields}
         placeholder={coordinates ? "Pinned Location" : "Location (required)" /*TODO: instead of pinned, display address via reverse geocode */}
       ></TextInput>
