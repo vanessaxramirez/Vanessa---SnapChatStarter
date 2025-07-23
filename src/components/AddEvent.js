@@ -13,7 +13,7 @@ import {
 import { supabase } from "../utils/hooks/supabase";
 import { Dialog, FAB } from "@rn-vui/themed";
 
-export default function AddEvent({ isVisible, onClose }) {
+export default function AddEvent({ isVisible, onClose, coordinates }) {
   const [title, setTitle] = useState("");
   const [descr, setDescr] = useState("");
   const [time, setTime] = useState("");
@@ -100,7 +100,7 @@ export default function AddEvent({ isVisible, onClose }) {
       <TextInput
         onChangeText={(text) => setLocation(text)}
         style={styles.inputFields}
-        placeholder="Location (required)"
+        placeholder={coordinates ? "Pinned Location" : "Location (required)" /*TODO: instead of pinned, display address via reverse geocode */}
       ></TextInput>
       <TextInput
         onChangeText={(text) => setImageURL(text)}
