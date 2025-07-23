@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import MapView, { Marker } from "react-native-maps";
+import AddEvent from "../components/AddEvent";
 import {
   StyleSheet,
   View,
@@ -48,6 +49,14 @@ export default function MapScreen({ navigation }) {
     })();
   }, []);
 
+  function toggleComponent() {
+    setAddEventvisible(!addEventvisible);
+  }
+
+  const refreshEvents = async () => {
+    await fetchData();
+  };
+
   let text = "Waiting...";
   text = JSON.stringify(location);
 
@@ -62,6 +71,20 @@ export default function MapScreen({ navigation }) {
 
       <View style={[styles.mapFooter]}>
         <View style={styles.locationContainer}>
+          <AddEvent
+            isVisible={addEventvisible}
+            coordinates={location}
+            onClose={() => {
+              toggleComponent();
+              refreshEvents();
+              console.log(location);
+            }}
+          />
+          <Button
+            onPress={() => {
+              setAddEventvisible(true);
+            }}
+          />
           <TouchableOpacity
             style={[styles.userLocation, styles.shadow]}
             onPress={() => {
