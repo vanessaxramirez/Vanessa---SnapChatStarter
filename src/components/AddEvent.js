@@ -19,6 +19,7 @@ export default function AddEvent({ isVisible, onClose, coordinates }) {
   const [time, setTime] = useState("");
   const [location, setLocation] = useState("");
   const [imageURL, setImageURL] = useState("");
+  const [addEventvisible, setAddEventvisible] = useState(false);
 
   const [event, setEvent] = useState({});
 
@@ -98,7 +99,7 @@ export default function AddEvent({ isVisible, onClose, coordinates }) {
         placeholder="Time (required)"
       ></TextInput>
       <TextInput
-        onChangeText={(text) => coordinates ? setLocation() : setLocation(text)}
+        onChangeText={(text) => coordinates ? setLocation(coordinates) : setLocation(text)}
         style={styles.inputFields}
         placeholder={coordinates ? "Pinned Location" : "Location (required)" /*TODO: instead of pinned, display address via reverse geocode */}
       ></TextInput>
