@@ -23,10 +23,11 @@ export default function MapScreen({ navigation }) {
   const insets = useSafeAreaInsets();
   const [location, setLocation] = useState();
   const [errorMsg, setErrorMsg] = useState();
-  const [markerLocation, setMarker] = useState([]);
+  const [markerLocation, setMarker] = useState({});
   const [addEventvisible, setAddEventvisible] = useState(false);
   const [mapPop, setMapPop] = useState(false);
   const [popupCoords, setPopupCoords] = useState();
+  
 
   const [currentRegion, setCurrentRegion] = useState({
     latitude: 34.0211573,
@@ -68,6 +69,8 @@ export default function MapScreen({ navigation }) {
     // console.log(event.nativeEvent.coordinate);
     const lat = event.nativeEvent.coordinate.latitude;
     const long = event.nativeEvent.coordinate.longitude;
+
+    const { coordinate } = event.nativeEvent;
     // console.log("Latitude:", lat);
     // console.log("Longitude:", long);
     setMapPop(true);
@@ -75,6 +78,10 @@ export default function MapScreen({ navigation }) {
     // console.log("setting map pop to", mapPop);
     setMarker([lat, long]);
     setAddEventvisible(true);
+    setMarker({
+      latitude: coordinate.latitude,
+      longitude: coordinate.longitude,
+    });
   };
 
   let text = "Waiting...";
@@ -120,7 +127,7 @@ export default function MapScreen({ navigation }) {
         <View style={styles.locationContainer}>
           <AddEvent
             isVisible={addEventvisible}
-            coordinates={location}
+            coordinates={markerLocation}
             onClose={() => {
               toggleComponent();
               refreshEvents();

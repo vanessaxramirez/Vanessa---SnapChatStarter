@@ -59,7 +59,7 @@ export default function AddEvent({ isVisible, onClose, coordinates }) {
     }
 
     const getAddress = async () => {
-          const coords = JSON.parse(coordinates);
+          const coords = coordinates;
           try {
             const geocode = await Location.reverseGeocodeAsync({
               latitude: coords.latitude,
@@ -124,9 +124,9 @@ export default function AddEvent({ isVisible, onClose, coordinates }) {
         placeholder="Time (required)"
       ></TextInput>
       <TextInput
-        onChangeText={(text) => {setLocation(coordinates)}}
+        onChangeText={(text) => setLocation(text)}
         style={styles.inputFields}
-        placeholder={coordinates ? {address}: "Location (required)" /*TODO: instead of pinned, display address via reverse geocode */}
+        placeholder={address ? address : "Location (required)"}
       ></TextInput>
       <TextInput
         onChangeText={(text) => setImageURL(text)}
