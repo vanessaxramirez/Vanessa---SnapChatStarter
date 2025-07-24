@@ -29,7 +29,7 @@ export default function MapScreen({ navigation }) {
   const [mapPop, setMapPop] = useState(false);
   const [popupCoords, setPopupCoords] = useState();
   const route = useRoute();
-  let targetLocation = route.params?.coordinates || null;
+  const [targetLocation, setTargetLocation] = useState(route.params?.coordinates || null);
 
   const [currentRegion, setCurrentRegion] = useState({
     latitude: 34.0211573,
@@ -58,22 +58,20 @@ export default function MapScreen({ navigation }) {
       });
     })();
 
-    if (targetLocation) {
-      console.log("Target Location:", typeof targetLocation);
-      // targetLocation = JSON.parse(targetLocation);
-      setCurrentRegion({
-        latitude: targetLocation.latitude,
-        longitude: targetLocation.longitude,
-        latitudeDelta: 0.01,
-        longitudeDelta: 0.01,
-      });
-
-      setMarker({
-        latitude: targetLocation.latitude,
-        longitude: targetLocation.longitude,
-      });
-    }
-  }, [targetLocation]);
+    if (route.params?.coordinates) {
+    setTargetLocation(route.params.coordinates);
+    setCurrentRegion({
+      latitude: route.params.coordinates.latitude,
+      longitude: route.params.coordinates.longitude,
+      latitudeDelta: 0.01,
+      longitudeDelta: 0.01,
+    });
+    setMarker({
+      latitude: route.params.coordinates.latitude,
+      longitude: route.params.coordinates.longitude,
+    });
+  }
+  }, [route.params?.coordinates]);
 
   function toggleComponent() {
     setAddEventvisible(!addEventvisible);
@@ -93,6 +91,8 @@ export default function MapScreen({ navigation }) {
     // console.log("Longitude:", long);
     setMapPop(true);
     setPopupCoords({ latitude: lat, longitude: long });
+    console.log("Map pressed at:", popupCoords.latitude, popupCoords.longitude);
+    setTargetLocation(null);
     // console.log("setting map pop to", mapPop);
     // setMarker([lat, long]);
     // setAddEventvisible(true);
@@ -126,7 +126,7 @@ export default function MapScreen({ navigation }) {
           />
         </Marker> */}
         {((mapPop && popupCoords) || targetLocation) && (
-          <Marker coordinate={targetLocation ? targetLocation : popupCoords}>
+          <Marker coordinate={targetLocation ?? popupCoords}>
             <Ionicons name="location-sharp" size={30} color="red" />
             <View
               style={{
