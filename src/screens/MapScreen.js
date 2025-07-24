@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import MapView, { Marker } from "react-native-maps";
 import AddEvent from "../components/AddEvent";
+import { Button } from "@rn-vui/base";
+
 import {
   StyleSheet,
   View,
@@ -22,7 +24,8 @@ export default function MapScreen({ navigation }) {
   const insets = useSafeAreaInsets();
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
-   const [addEventvisible, setAddEventvisible] = useState(false);
+  const [addEventvisible, setAddEventvisible] = useState(false);
+  const [markerLocation, setMarkerLocation] = useState({});
 
   const [currentRegion, setCurrentRegion] = useState({
     latitude: 34.0211573,
@@ -58,6 +61,12 @@ export default function MapScreen({ navigation }) {
     await fetchData();
   };
 
+  const handleMapPress = (event) => {
+    const { coordinate } = event.nativeEvent;
+    console.log('Map pressed at:', coordinate.latitude, coordinate.longitude);
+    setMarkerLocation({ latitude: coordinate.latitude, longitude: coordinate.longitude });
+  };
+
   let text = "Waiting...";
   text = JSON.stringify(location);
 
@@ -68,13 +77,14 @@ export default function MapScreen({ navigation }) {
         region={currentRegion}
         showsUserLocation={true}
         showsMyLocationButton={true}
+        onPress={handleMapPress}
       />
 
       <View style={[styles.mapFooter]}>
         <View style={styles.locationContainer}>
           <AddEvent
             isVisible={addEventvisible}
-            coordinates={location}
+            coordinates={markerLocation}
             onClose={() => {
               toggleComponent();
               refreshEvents();
@@ -85,7 +95,7 @@ export default function MapScreen({ navigation }) {
             onPress={() => {
               setAddEventvisible(true);
             }}
-          />ß
+          />
           <TouchableOpacity
             style={[styles.userLocation, styles.shadow]}
             onPress={() => {
