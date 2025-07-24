@@ -60,23 +60,30 @@ export default function AddEvent({ isVisible, onClose, coordinates }) {
     }
 
     const getAddress = async () => {
-          const coords = coordinates;
-          try {
-            const geocode = await Location.reverseGeocodeAsync({
-              latitude: coords.latitude,
-              longitude: coords.longitude,
-            });
-    
-            if (geocode.length > 0) {
-              const { street, city, region } = geocode[0];
-              setAddress(`${street}, ${city}, ${region}`);
-            }
-          } catch (err) {
-            console.error('Failed to reverse geocode:', err);
-          }
-        };
-    
-        getAddress();
+      const coords = coordinates;
+      if (
+        !coords ||
+        typeof coords.latitude !== "number" ||
+        typeof coords.longitude !== "number"
+      ) {
+        return;
+      }
+      try {
+        const geocode = await Location.reverseGeocodeAsync({
+          latitude: coords.latitude,
+          longitude: coords.longitude,
+        });
+
+        if (geocode.length > 0) {
+          const { street, city, region } = geocode[0];
+          setAddress(`${street}, ${city}, ${region}`);
+        }
+      } catch (err) {
+        console.error("Failed to reverse geocode:", err);
+      }
+    };
+
+    getAddress();
   }, [coordinates]);
 
   const insertData = async () => {
