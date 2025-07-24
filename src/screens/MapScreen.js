@@ -27,7 +27,6 @@ export default function MapScreen({ navigation }) {
   const [addEventvisible, setAddEventvisible] = useState(false);
   const [mapPop, setMapPop] = useState(false);
   const [popupCoords, setPopupCoords] = useState();
-  
 
   const [currentRegion, setCurrentRegion] = useState({
     latitude: 34.0211573,
@@ -76,8 +75,8 @@ export default function MapScreen({ navigation }) {
     setMapPop(true);
     setPopupCoords({ latitude: lat, longitude: long });
     // console.log("setting map pop to", mapPop);
-    // setMarker({latitude: lat, longitude: long});
-    setAddEventvisible(true);
+    setMarker([lat, long]);
+    // setAddEventvisible(true);
     setMarker({
       latitude: coordinate.latitude,
       longitude: coordinate.longitude,
@@ -108,17 +107,30 @@ export default function MapScreen({ navigation }) {
           />
         </Marker> */}
         {mapPop && popupCoords && (
-          <Marker
-            coordinate={popupCoords}
-            pinColor="red"
-          >
-            <Ionicons name="location-sharp" size={40} color="red" />
-            <Button
+          <Marker coordinate={popupCoords} anchor={{x: 0, y: 0}}>
+            <Ionicons name="location-sharp" size={30} color="red" />
+            <View
+              style={{
+                
+                backgroundColor: "white",
+                borderRadius: 5,
+                borderWidth: 1,
+                borderColor: "#ccc",
+              }}
+            >
+              <Button
+              title="Create Event"
+                onPress={() => {
+                  setAddEventvisible(true);
+                }}
+              />
+            </View>
+            {/* <Button
             title="Create Event"
             onLongPress={() => {
               setAddEventvisible(true);
             }}
-          />
+          /> */}
           </Marker>
         )}
       </MapView>
