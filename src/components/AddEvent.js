@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { supabase } from "../utils/hooks/supabase";
 import { Dialog, FAB } from "@rn-vui/themed";
+import * as Location from "expo-location";
 
 export default function AddEvent({ isVisible, onClose, coordinates }) {
   const [title, setTitle] = useState("");
