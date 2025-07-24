@@ -9,8 +9,12 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Card, FAB } from "@rn-vui/themed";
+import { useNavigation } from '@react-navigation/native';
 
 export default function EventInfo({ isVisible, event, onClose }) {
+  
+  const navigation = useNavigation();
+
   if (!event || !isVisible) return null;
 
   let bitmoji =
@@ -41,8 +45,8 @@ export default function EventInfo({ isVisible, event, onClose }) {
         onPress={() => console.log("Interested")}
       />
       <TouchableOpacity 
-        onPress={() => navigation.navigate("Map")}>
-      <Text style={styles.locationText}>Location on Map</Text>
+        onPress={() => navigation.navigate("UserTab", { screen: "Map", params: { coordinates: {latitude: event.location.latitude, longitude: event.location.longitude } } })}>
+      <Text style={styles.locationLinkText}>Location on Map</Text>
       </TouchableOpacity>
       <Text style={styles.peopleText}>People Attending</Text>
 
@@ -96,6 +100,11 @@ const styles = StyleSheet.create({
   locationText: {
     textAlign: "center",
     marginBottom: 15,
+  },
+  locationLinkText: {
+    textAlign: "center",
+    marginBottom: 15,
+    color: "#0044ffff",
   },
   closeIcon: {
     position: "absolute",

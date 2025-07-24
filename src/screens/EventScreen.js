@@ -29,7 +29,7 @@ export default function EventScreen({ route, navigation }) {
 
   function handleCardTouch(event) {
     setDetailsVisible(true);
-    console.log(detailsVisible);
+    console.log(typeof event.location);
     setSelectedEvent(event);
   }
 
