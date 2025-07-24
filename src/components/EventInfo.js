@@ -40,6 +40,10 @@ export default function EventInfo({ isVisible, event, onClose }) {
         style={{ marginBottom: 10 }}
         onPress={() => console.log("Interested")}
       />
+      <TouchableOpacity 
+        onPress={() => navigation.navigate("Map")}>
+      <Text style={styles.locationText}>Location on Map</Text>
+      </TouchableOpacity>
       <Text style={styles.peopleText}>People Attending</Text>
 
       <View style={styles.bitmojisContainer}>

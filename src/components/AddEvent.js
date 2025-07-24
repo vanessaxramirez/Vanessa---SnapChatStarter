@@ -1,4 +1,4 @@
-import React from "react";
+import React, { use, useEffect } from "react";
 import { useState } from "react";
 
 import {
@@ -52,8 +52,14 @@ export default function AddEvent({ isVisible, onClose, coordinates }) {
     return object;
   }
 
+  useEffect(() => {
+    if (coordinates) {
+      setLocation(coordinates);
+    }
+  }, [coordinates]);
+
   const insertData = async () => {
-    if (title != "" && time != "" && location != "") {
+    if (title != "" && time != "" && location != {}) {
       const eventData = submitToSupabase();
       console.log(eventData);
 
