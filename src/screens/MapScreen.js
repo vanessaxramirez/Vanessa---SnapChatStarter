@@ -69,9 +69,9 @@ export default function MapScreen({ navigation }) {
       });
 
       setMarker({
-      latitude: targetLocation.latitude,
-      longitude: targetLocation.longitude,
-    });
+        latitude: targetLocation.latitude,
+        longitude: targetLocation.longitude,
+      });
     }
   }, [targetLocation]);
 
@@ -125,8 +125,8 @@ export default function MapScreen({ navigation }) {
             resizeMode="contain"
           />
         </Marker> */}
-        {mapPop && popupCoords && (
-          <Marker coordinate={targetLocation ? targetLocation : popupCoords} anchor={{ x: 0, y: 0 }}>
+        {((mapPop && popupCoords) || targetLocation) && (
+          <Marker coordinate={targetLocation ? targetLocation : popupCoords}>
             <Ionicons name="location-sharp" size={30} color="red" />
             <View
               style={{
@@ -136,12 +136,16 @@ export default function MapScreen({ navigation }) {
                 borderColor: "#ccc",
               }}
             >
-              <Button
-                title="Create Event"
-                onPress={() => {
-                  setAddEventvisible(true);
-                }}
-              />
+              {!targetLocation && (
+                <Pressable
+                  onPress={() => {
+                    setAddEventvisible(true);
+                  }}
+                  style={styles.button}
+                >
+                  <Text style={styles.buttonText}>Create Event</Text>
+                </Pressable>
+              )}
             </View>
             {/* <Button
             title="Create Event"
@@ -308,5 +312,16 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     textAlign: "center",
     shadowColor: "#000",
+  },
+  button: {
+    backgroundColor: "white",
+    padding: 5,
+    borderRadius: 10,
+  },
+  buttonText: {
+    color: "#57B9FF",
+    fontSize: 16,
+    fontFamily: "Avenir",
+    fontWeight: "bold",
   },
 });
