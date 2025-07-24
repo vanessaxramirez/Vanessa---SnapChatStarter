@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import MapView, { Marker } from "react-native-maps";
-import AddEvent from "../components/AddEvent";
-import { Button } from "@rn-vui/base";
-
+import { Button } from "react-native";
 import {
   StyleSheet,
   View,
@@ -14,6 +12,7 @@ import {
 } from "react-native";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import AddEvent from "../components/AddEvent";
 
 import * as Location from "expo-location";
 
@@ -22,10 +21,12 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 export default function MapScreen({ navigation }) {
   const tabBarHeight = useBottomTabBarHeight();
   const insets = useSafeAreaInsets();
-  const [location, setLocation] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
+  const [location, setLocation] = useState();
+  const [errorMsg, setErrorMsg] = useState();
+  const [markerLocation, setMarker] = useState([]);
   const [addEventvisible, setAddEventvisible] = useState(false);
-  const [markerLocation, setMarkerLocation] = useState({});
+  const [mapPop, setMapPop] = useState(false);
+  const [popupCoords, setPopupCoords] = useState();
 
   const [currentRegion, setCurrentRegion] = useState({
     latitude: 34.0211573,
@@ -45,8 +46,10 @@ export default function MapScreen({ navigation }) {
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
       setCurrentRegion({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
+        latitude: 34.0211573,
+        longitude: -118.4503864,
+        // latitude: location.coords.latitude,
+        // longitude: location.coords.longitude,
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421,
       });
@@ -62,9 +65,16 @@ export default function MapScreen({ navigation }) {
   };
 
   const handleMapPress = (event) => {
-    const { coordinate } = event.nativeEvent;
-    console.log('Map pressed at:', coordinate.latitude, coordinate.longitude);
-    setMarkerLocation({ latitude: coordinate.latitude, longitude: coordinate.longitude });
+    // console.log(event.nativeEvent.coordinate);
+    const lat = event.nativeEvent.coordinate.latitude;
+    const long = event.nativeEvent.coordinate.longitude;
+    // console.log("Latitude:", lat);
+    // console.log("Longitude:", long);
+    setPopupCoords({ latitude: lat, longitude: long });
+    setMapPop(true);
+    console.log("setting map pop to", mapPop);
+    setMarker([lat, long]);
+    setAddEventvisible(true);
   };
 
   let text = "Waiting...";
@@ -77,25 +87,51 @@ export default function MapScreen({ navigation }) {
         region={currentRegion}
         showsUserLocation={true}
         showsMyLocationButton={true}
-        onPress={handleMapPress}
-      />
+        onLongPress={handleMapPress}
+      >
+        {/* <Marker
+          coordinate={{ latitude: 34.0211573, longitude: -118.4503864 }}
+          title="Pinpoint"
+          description="This is a pinned location"
+        >
+          <Image
+            source={require("../../assets/marker.jpg")}
+            style={{ width: 30, height: 30 }}
+            resizeMode="contain"
+          />
+        </Marker> */}
+        {mapPop && popupCoords && (
+          <Marker
+            coordinate={popupCoords}
+            // draggable={false}
+            pinColor="red"
+          >
+            <Image
+              source={require("../../assets/pinMarker.png")}
+              style={{ width: 30, height: 30 }}
+              resizeMode="contain"
+            />
+          </Marker>
+        )}
+      </MapView>
 
       <View style={[styles.mapFooter]}>
         <View style={styles.locationContainer}>
           <AddEvent
             isVisible={addEventvisible}
-            coordinates={markerLocation}
+            coordinates={location}
             onClose={() => {
               toggleComponent();
               refreshEvents();
               console.log(location);
             }}
           />
-          <Button
+          {/* <Button
+            title="Hold me"
             onPress={() => {
               setAddEventvisible(true);
             }}
-          />
+          /> */}
           <TouchableOpacity
             style={[styles.userLocation, styles.shadow]}
             onPress={() => {
@@ -232,4 +268,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   calendarIcon: {},
+  mapPopUpButton: {
+    width: 20,
+    height: 10,
+    color: "#90D5FF",
+    backgroundColor: "white",
+    borderRadius: 3,
+    textAlign: "center",
+    shadowColor: "#000",
+  },
 });
