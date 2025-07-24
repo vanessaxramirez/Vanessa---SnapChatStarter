@@ -105,11 +105,7 @@ export default function MapScreen({ navigation }) {
             coordinate={popupCoords}
             pinColor="red"
           >
-            <Image
-              source={require("../../assets/pinMarker.png")}
-              style={{ width: 30, height: 30 }}
-              resizeMode="contain"
-            />
+            <Ionicons name="location-sharp" size={40} color="red" />
             <Button
             title="Create Event"
             onLongPress={() => {
