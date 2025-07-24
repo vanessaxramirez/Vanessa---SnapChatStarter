@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import MapView, { Marker } from "react-native-maps";
 import { Button } from "react-native";
+import { useRoute } from "@react-navigation/native";
 import {
   StyleSheet,
   View,
@@ -27,6 +28,8 @@ export default function MapScreen({ navigation }) {
   const [addEventvisible, setAddEventvisible] = useState(false);
   const [mapPop, setMapPop] = useState(false);
   const [popupCoords, setPopupCoords] = useState();
+  const route = useRoute();
+  let targetLocation = route.params?.coordinates || null;
 
   const [currentRegion, setCurrentRegion] = useState({
     latitude: 34.0211573,
@@ -54,7 +57,23 @@ export default function MapScreen({ navigation }) {
         longitudeDelta: 0.0421,
       });
     })();
-  }, []);
+
+    if (targetLocation) {
+      console.log("Target Location:", typeof targetLocation);
+      // targetLocation = JSON.parse(targetLocation);
+      setCurrentRegion({
+        latitude: targetLocation.latitude,
+        longitude: targetLocation.longitude,
+        latitudeDelta: 0.01,
+        longitudeDelta: 0.01,
+      });
+
+      setMarker({
+      latitude: targetLocation.latitude,
+      longitude: targetLocation.longitude,
+    });
+    }
+  }, [targetLocation]);
 
   function toggleComponent() {
     setAddEventvisible(!addEventvisible);
@@ -75,7 +94,7 @@ export default function MapScreen({ navigation }) {
     setMapPop(true);
     setPopupCoords({ latitude: lat, longitude: long });
     // console.log("setting map pop to", mapPop);
-    setMarker([lat, long]);
+    // setMarker([lat, long]);
     // setAddEventvisible(true);
     setMarker({
       latitude: coordinate.latitude,
@@ -107,11 +126,10 @@ export default function MapScreen({ navigation }) {
           />
         </Marker> */}
         {mapPop && popupCoords && (
-          <Marker coordinate={popupCoords} anchor={{x: 0, y: 0}}>
+          <Marker coordinate={targetLocation ? targetLocation : popupCoords} anchor={{ x: 0, y: 0 }}>
             <Ionicons name="location-sharp" size={30} color="red" />
             <View
               style={{
-                
                 backgroundColor: "white",
                 borderRadius: 5,
                 borderWidth: 1,
@@ -119,7 +137,7 @@ export default function MapScreen({ navigation }) {
               }}
             >
               <Button
-              title="Create Event"
+                title="Create Event"
                 onPress={() => {
                   setAddEventvisible(true);
                 }}
