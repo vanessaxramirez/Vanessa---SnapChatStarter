@@ -70,9 +70,9 @@ export default function MapScreen({ navigation }) {
     const long = event.nativeEvent.coordinate.longitude;
     // console.log("Latitude:", lat);
     // console.log("Longitude:", long);
-    setPopupCoords({ latitude: lat, longitude: long });
     setMapPop(true);
-    console.log("setting map pop to", mapPop);
+    setPopupCoords({ latitude: lat, longitude: long });
+    // console.log("setting map pop to", mapPop);
     setMarker([lat, long]);
     setAddEventvisible(true);
   };
@@ -103,7 +103,6 @@ export default function MapScreen({ navigation }) {
         {mapPop && popupCoords && (
           <Marker
             coordinate={popupCoords}
-            // draggable={false}
             pinColor="red"
           >
             <Image
@@ -111,6 +110,12 @@ export default function MapScreen({ navigation }) {
               style={{ width: 30, height: 30 }}
               resizeMode="contain"
             />
+            <Button
+            title="Create Event"
+            onLongPress={() => {
+              setAddEventvisible(true);
+            }}
+          />
           </Marker>
         )}
       </MapView>
@@ -126,12 +131,6 @@ export default function MapScreen({ navigation }) {
               console.log(location);
             }}
           />
-          {/* <Button
-            title="Hold me"
-            onPress={() => {
-              setAddEventvisible(true);
-            }}
-          /> */}
           <TouchableOpacity
             style={[styles.userLocation, styles.shadow]}
             onPress={() => {
