@@ -21,6 +21,7 @@ export default function AddEvent({ isVisible, onClose, coordinates }) {
   const [imageURL, setImageURL] = useState("");
 
   const [event, setEvent] = useState({});
+  const [address, setAddress] = useState(null);
 
   const fallbackImageURL =
     "https://interactive-examples.mdn.mozilla.net/media/examples/plumeria.jpg";
@@ -56,6 +57,25 @@ export default function AddEvent({ isVisible, onClose, coordinates }) {
     if (coordinates) {
       setLocation(coordinates);
     }
+
+    const getAddress = async () => {
+          const coords = JSON.parse(coordinates);
+          try {
+            const geocode = await Location.reverseGeocodeAsync({
+              latitude: coords.latitude,
+              longitude: coords.longitude,
+            });
+    
+            if (geocode.length > 0) {
+              const { street, city, region } = geocode[0];
+              setAddress(`${street}, ${city}, ${region}`);
+            }
+          } catch (err) {
+            console.error('Failed to reverse geocode:', err);
+          }
+        };
+    
+        getAddress();
   }, [coordinates]);
 
   const insertData = async () => {
@@ -106,7 +126,7 @@ export default function AddEvent({ isVisible, onClose, coordinates }) {
       <TextInput
         onChangeText={(text) => {setLocation(coordinates)}}
         style={styles.inputFields}
-        placeholder={coordinates ? "Pinned Location" : "Location (required)" /*TODO: instead of pinned, display address via reverse geocode */}
+        placeholder={coordinates ? {address}: "Location (required)" /*TODO: instead of pinned, display address via reverse geocode */}
       ></TextInput>
       <TextInput
         onChangeText={(text) => setImageURL(text)}

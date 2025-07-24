@@ -1,4 +1,4 @@
-import React from "react";
+import {React, useState, useEffect} from "react";
 import {
   View,
   Text,
@@ -10,10 +10,34 @@ import {
 } from "react-native";
 import { Card, FAB } from "@rn-vui/themed";
 import { useNavigation } from '@react-navigation/native';
+import * as Location from 'expo-location';
 
 export default function EventInfo({ isVisible, event, onClose }) {
   
   const navigation = useNavigation();
+  const [address, setAddress] = useState(null);
+
+useEffect(() => {
+  //Uses expo-location to reverse geocode the event location to be displayed as an address 
+    const getAddress = async () => {
+      const coords = JSON.parse(event.location);
+      try {
+        const geocode = await Location.reverseGeocodeAsync({
+          latitude: coords.latitude,
+          longitude: coords.longitude,
+        });
+
+        if (geocode.length > 0) {
+          const { street, city, region } = geocode[0];
+          setAddress(`${street}, ${city}, ${region}`);
+        }
+      } catch (err) {
+        console.error('Failed to reverse geocode:', err);
+      }
+    };
+
+    getAddress();
+  }, [event?.location]);
 
   if (!event || !isVisible) return null;
 
@@ -36,7 +60,7 @@ export default function EventInfo({ isVisible, event, onClose }) {
       <Text style={styles.titleText}>{event.title}</Text>
       <Text style={styles.descriptionText}>{event.description}</Text>
       <Text style={styles.timeText}>{event.time}</Text>
-      <Text style={styles.locationText}>{event.location}</Text>
+      <Text style={styles.locationText}>{address}</Text>
       <Text style={styles.locationText}>Interested in Attending?</Text>
       <FAB
         title="Yes"
