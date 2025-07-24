@@ -76,7 +76,7 @@ export default function MapScreen({ navigation }) {
     setMapPop(true);
     setPopupCoords({ latitude: lat, longitude: long });
     // console.log("setting map pop to", mapPop);
-    setMarker([lat, long]);
+    // setMarker({latitude: lat, longitude: long});
     setAddEventvisible(true);
     setMarker({
       latitude: coordinate.latitude,
