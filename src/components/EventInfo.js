@@ -45,7 +45,7 @@ export default function EventInfo({ isVisible, event, onClose }) {
         onPress={() => console.log("Interested")}
       />
       <TouchableOpacity 
-        onPress={() => navigation.navigate("UserTab", { screen: "Map", params: { coordinates: {latitude: event.location.latitude, longitude: event.location.longitude } } })}>
+        onPress={() => navigation.navigate("UserTab", { screen: "Map", params: { coordinates: {latitude: JSON.parse(event.location).latitude, longitude: JSON.parse(event.location).longitude } } })}>
       <Text style={styles.locationLinkText}>Location on Map</Text>
       </TouchableOpacity>
       <Text style={styles.peopleText}>People Attending</Text>
