@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import MapView, { Marker } from "react-native-maps";
 import { Button } from "react-native";
 import { useRoute } from "@react-navigation/native";
+import { Animated } from "react-native";
 import {
   StyleSheet,
   View,
@@ -33,6 +34,7 @@ export default function MapScreen({ navigation }) {
   const [targetLocation, setTargetLocation] = useState(
     route.params?.coordinates || null
   );
+  const scale = useRef(new Animated.Value(0)).current;
 
   const [currentRegion, setCurrentRegion] = useState({
     latitude: 34.0211573,
@@ -91,16 +93,11 @@ export default function MapScreen({ navigation }) {
     const long = event.nativeEvent.coordinate.longitude;
 
     const { coordinate } = event.nativeEvent;
-    // console.log("Latitude:", lat);
-    // console.log("Longitude:", long);
     setMapPop(true);
     setPopupCoords({ latitude: lat, longitude: long });
     console.log("Map pressed at:", lat, long);
     setTargetLocation(null);
     setIsPressedLocation(true);
-    // console.log("setting map pop to", mapPop);
-    // setMarker([lat, long]);
-    // setAddEventvisible(true);
     setMarker({
       latitude: coordinate.latitude,
       longitude: coordinate.longitude,
@@ -109,6 +106,18 @@ export default function MapScreen({ navigation }) {
 
   let text = "Waiting...";
   text = JSON.stringify(location);
+
+  //Pop up animation for the pin icon
+  useEffect(() => {
+    // Animate from 0 to 1 scale with a spring/pop effect
+    scale.setValue(0); 
+    Animated.spring(scale, {
+      toValue: 1,
+      friction: 5,
+      tension: 150,
+      useNativeDriver: true,
+    }).start();
+  }, [markerLocation]);
 
   return (
     <View style={[styles.container, { marginBottom: tabBarHeight }]}>
@@ -119,18 +128,6 @@ export default function MapScreen({ navigation }) {
         showsMyLocationButton={true}
         onLongPress={handleMapPress}
       >
-        {/* <Marker
-          coordinate={{ latitude: 34.0211573, longitude: -118.4503864 }}
-          title="Pinpoint"
-          description="This is a pinned location"
-        >
-          <Image
-            source={require("../../assets/marker.jpg")}
-            style={{ width: 30, height: 30 }}
-            resizeMode="contain"
-          />
-        </Marker> */}
-        {/* {((mapPop && popupCoords) || targetLocation) && ( */}
         {(markerLocation || targetLocation) && (
           <Marker
             coordinate={markerLocation ?? targetLocation}
@@ -140,26 +137,35 @@ export default function MapScreen({ navigation }) {
                 : `target-${targetLocation.latitude}-${targetLocation.longitude}`
             }
           >
-            <Ionicons name="location-sharp" size={30} color="red" />
-            {markerLocation && !targetLocation && (
-              <View
-                style={{
-                  backgroundColor: "white",
-                  borderRadius: 5,
-                  borderWidth: 1,
-                  borderColor: "#ccc",
-                }}
-              >
-                <Pressable
-                  onPress={() => {
-                    setAddEventvisible(true);
+            <View
+              style={{
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Animated.View style={{ transform: [{ scale }] }}>
+              <Ionicons name="location-sharp" size={30} color="red" />
+              </Animated.View>
+              {markerLocation && !targetLocation && (
+                <View
+                  style={{
+                    backgroundColor: "white",
+                    borderRadius: 5,
+                    borderWidth: 1,
+                    borderColor: "#ccc",
                   }}
-                  style={styles.button}
                 >
-                  <Text style={styles.buttonText}>Create Event</Text>
-                </Pressable>
-              </View>
-            )}
+                  <Pressable
+                    onPress={() => {
+                      setAddEventvisible(true);
+                    }}
+                    style={styles.button}
+                  >
+                    <Text style={styles.buttonText}>Create Event</Text>
+                  </Pressable>
+                </View>
+              )}
+            </View>
             {/* <Button
             title="Create Event"
             onLongPress={() => {
