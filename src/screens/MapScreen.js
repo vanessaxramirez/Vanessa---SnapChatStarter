@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import MapView, { Marker } from "react-native-maps";
 import { Button } from "react-native";
 import { useRoute } from "@react-navigation/native";
@@ -28,8 +28,11 @@ export default function MapScreen({ navigation }) {
   const [addEventvisible, setAddEventvisible] = useState(false);
   const [mapPop, setMapPop] = useState(false);
   const [popupCoords, setPopupCoords] = useState();
+  const [isPressedLocation, setIsPressedLocation] = useState(false);
   const route = useRoute();
-  const [targetLocation, setTargetLocation] = useState(route.params?.coordinates || null);
+  const [targetLocation, setTargetLocation] = useState(
+    route.params?.coordinates || null
+  );
 
   const [currentRegion, setCurrentRegion] = useState({
     latitude: 34.0211573,
@@ -59,18 +62,19 @@ export default function MapScreen({ navigation }) {
     })();
 
     if (route.params?.coordinates) {
-    setTargetLocation(route.params.coordinates);
-    setCurrentRegion({
-      latitude: route.params.coordinates.latitude,
-      longitude: route.params.coordinates.longitude,
-      latitudeDelta: 0.01,
-      longitudeDelta: 0.01,
-    });
-    setMarker({
-      latitude: route.params.coordinates.latitude,
-      longitude: route.params.coordinates.longitude,
-    });
-  }
+      setTargetLocation(route.params.coordinates);
+      setCurrentRegion({
+        latitude: route.params.coordinates.latitude,
+        longitude: route.params.coordinates.longitude,
+        latitudeDelta: 0.01,
+        longitudeDelta: 0.01,
+      });
+      setMarker({
+        latitude: route.params.coordinates.latitude,
+        longitude: route.params.coordinates.longitude,
+      });
+    }
+    setIsPressedLocation(false);
   }, [route.params?.coordinates]);
 
   function toggleComponent() {
@@ -91,8 +95,9 @@ export default function MapScreen({ navigation }) {
     // console.log("Longitude:", long);
     setMapPop(true);
     setPopupCoords({ latitude: lat, longitude: long });
-    console.log("Map pressed at:", popupCoords.latitude, popupCoords.longitude);
+    console.log("Map pressed at:", lat, long);
     setTargetLocation(null);
+    setIsPressedLocation(true);
     // console.log("setting map pop to", mapPop);
     // setMarker([lat, long]);
     // setAddEventvisible(true);
@@ -125,18 +130,26 @@ export default function MapScreen({ navigation }) {
             resizeMode="contain"
           />
         </Marker> */}
-        {((mapPop && popupCoords) || targetLocation) && (
-          <Marker coordinate={targetLocation ?? popupCoords}>
+        {/* {((mapPop && popupCoords) || targetLocation) && ( */}
+        {(markerLocation || targetLocation) && (
+          <Marker
+            coordinate={markerLocation ?? targetLocation}
+            key={
+              markerLocation
+                ? `marker-${markerLocation.latitude}-${markerLocation.longitude}`
+                : `target-${targetLocation.latitude}-${targetLocation.longitude}`
+            }
+          >
             <Ionicons name="location-sharp" size={30} color="red" />
-            <View
-              style={{
-                backgroundColor: "white",
-                borderRadius: 5,
-                borderWidth: 1,
-                borderColor: "#ccc",
-              }}
-            >
-              {!targetLocation && (
+            {markerLocation && !targetLocation && (
+              <View
+                style={{
+                  backgroundColor: "white",
+                  borderRadius: 5,
+                  borderWidth: 1,
+                  borderColor: "#ccc",
+                }}
+              >
                 <Pressable
                   onPress={() => {
                     setAddEventvisible(true);
@@ -145,8 +158,8 @@ export default function MapScreen({ navigation }) {
                 >
                   <Text style={styles.buttonText}>Create Event</Text>
                 </Pressable>
-              )}
-            </View>
+              </View>
+            )}
             {/* <Button
             title="Create Event"
             onLongPress={() => {
