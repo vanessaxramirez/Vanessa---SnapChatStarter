@@ -1,15 +1,5 @@
 
 
-# Install Packages
-1. Run the following command to be able to run your program.
-```js
-$ npx expo installs
-```
-
-##  Add Supabase Environment Variable!
-
-Get the code running! You'll need to rename `.env.example` to `.env.local` file. You should be able to reuse the Supabase keys from earlier's week project.
-
 <a id="readme-top"></a>
 
 <!-- PROJECT LOGO -->
@@ -88,9 +78,14 @@ Install dependancies
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+
+##  Add Supabase Environment Variable!
+
+You'll need to create and add your own `.env` file with your supabase key.
+
 <!-- USAGE EXAMPLES -->
 
-## Usage
+<!--## Usage
 
 Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
 
@@ -98,9 +93,9 @@ Use this space to show useful examples of how a project can be used. Additional 
 
 <!-- LICENSE -->
 
-## License
+<!--## License
 
-Distributed under the project_license. See `LICENSE.txt` for more information.
+Distributed under the project_license. See `LICENSE.txt` for more information.-->
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
