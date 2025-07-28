@@ -7,12 +7,10 @@
     <img src="https://github.com/user-attachments/assets/f611c2d3-f026-4cc7-99eb-0b86610b4c8e" alt="Logo" width="180" height="80">
   </a>
 
-<h3 align="center">Events Tab Upgrade</h3>
+<h3 align="center">Snap Events</h3>
 
   <p align="center">
-    <a href="https://github.com/github_username/repo_name"><strong>Explore the Docs Link»</strong></a>
-    <br />
-    <a href="https://github.com/github_username/repo_name">View Demo Link</a>
+    Snap Events in a prototype feature that allows users to create events for selected locations on Snap Maps.
   </p>
 </div>
 
@@ -39,6 +37,8 @@
 <!-- ABOUT THE PROJECT -->
 
 ## About The Project
+
+Snap Events integrates the once isolated events page with Snap Maps, streamlining the event creation and searching process.
 
 Given a basic outline of an outdated Snapchat app, our task was to enhance an existing feature or introduce a new one. Chanho and I chose to improve the Events feature, focusing on user experience and visual design.
 
