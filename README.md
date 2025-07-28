@@ -133,15 +133,15 @@ Save changes --> Done, your database is ready
 
 
 Key Parameters These are all text aside from createdAt (timestapmz) and private(jsonB)
-2. **Id Events: ** We create this by adding the current timestamp to the date and using the built in btoa()
-3. **Time: ** The time the event takes place
-4. **Title: ** Title for the event
-5. **Description: ** The description for each event
-6. **Attending : ** not implemented, but would be array of users who said yes
-7. **Private : ** not implemented, would be a toggle for whether or not events are visible to non friends
-8. ** Host : ** username for who is throwing the event
-9. **Image URL : ** Link to image to display
-10. **Location : ** Location of the event
+1. **Id Events: ** We create this by adding the current timestamp to the date and using the built in btoa()
+2. **Time: ** The time the event takes place
+3. **Title: ** Title for the event
+4. **Description: ** The description for each event
+5. **Attending : ** not implemented, but would be array of users who said yes
+6. **Private : ** not implemented, would be a toggle for whether or not events are visible to non friends
+7. ** Host : ** username for who is throwing the event
+8. **Image URL : ** Link to image to display
+9. **Location : ** Location of the event
 
 Once you've set your data base up, the Events tab in your psuedo Snapchat App will have events!
 Try adding your own evens by holding down on a location on the map or going to the events page and creating one there!
